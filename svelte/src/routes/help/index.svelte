@@ -5,6 +5,7 @@
 	import Start from './tab/start.svelte';
 	import Command from './tab/command.svelte';
 	import Note from './tab/note.svelte';
+	import Renderer from './tab/renderer.svelte';
 
 	const tabs: {
 		label: string;
@@ -12,7 +13,8 @@
 	}[] = [
 		{ label: 'Get Started', page: Start },
 		{ label: 'Command', page: Command },
-		{ label: 'Notes', page: Note }
+		{ label: 'Notes', page: Note },
+		{ label: 'Renderer', page: Renderer }
 	];
 </script>
 
@@ -26,6 +28,7 @@
 	<p style="text-align: center;">
 		<i>Template to create desktop application with SvelteKit, Electron and TypeScript</i>
 	</p>
+
 	<Tab {tabs} />
 </div>
 

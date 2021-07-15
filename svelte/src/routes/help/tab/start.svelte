@@ -7,6 +7,8 @@
 		>.
 	</p>
 
+	<p>This project is still under development: the <code>todos</code> section doesn't work!</p>
+
 	<p>To create a new project based on this template using degit:</p>
 
 	<div>
@@ -24,3 +26,10 @@
 		>
 	</p>
 </div>
+
+<style>
+	code {
+		background-color: var(--primary-color);
+		color: var(--accent-color);
+	}
+</style>

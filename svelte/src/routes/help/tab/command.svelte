@@ -9,12 +9,12 @@
 		</li>
 	</ul>
 
-	You can configure settings in <code>index.ts</code>. Change <code>developerOptions</code>:
+	You can configure settings in<code>index.ts</code>. Change <code>developerOptions</code>:
 
 	<ul>
 		<li><code>isInProduction</code>: true if is in production</li>
 		<li><code>serveSvelteDev</code>: true when you want to watch svelte</li>
-		<li><code>buildSvelteDiv</code>: true when you want to build svelte</li>
+		<li><code>buildSvelteDev</code>: true when you want to build svelte</li>
 		<li><code>watchSvelteBuild</code>: true when you want to watch build svelte</li>
 	</ul>
 
