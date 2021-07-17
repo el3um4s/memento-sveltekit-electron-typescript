@@ -1,8 +1,6 @@
 # MEMENTO SvelteKit Electron TypeScript
 Template to create a desktop app with SvelteKit, Electron and TypeScript (with electron-updater, electron-reload and electron-builder)
 
-**This project is still under development: the `todos` section doesn't work!**
-
 ## Get Started
 
 This is a project template for [Svelte](https://svelte.dev) and [Electron](https://www.electronjs.org/) apps. It lives at https://github.com/el3um4s/memento-sveltekit-electron-typescript.

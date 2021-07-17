@@ -1,26 +1,5 @@
-<!-- <script context="module" lang="ts">
-	import { enhance } from '$lib/form';
-	// import type { Load } from '@sveltejs/kit';
-
-	// see https://kit.svelte.dev/docs#loading
-	// export const load: Load = async () => {
-	// globalThis.api.fileSystem.send('readFile', 'todos.json');
-	// let todos = [];
-	// await globalThis.api.fileSystem.receive('getFile', (data) => {
-	// 	console.log('globalThis.api.fileSystem.receive');
-	// 	console.log(data);
-	// 	todos = data;
-	// });
-	// console.log('TODO DATA LOAD');
-	// console.log(todos);
-	// return {
-	// 	props: { todos }
-	// };
-	// };
-</script> -->
 <script lang="ts">
-	import { slide } from 'svelte/transition';
-	import { scale } from 'svelte/transition';
+	import { slide, fade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 
 	type Todo = {
@@ -30,9 +9,9 @@
 		done: boolean;
 	};
 
+	const fileName = 'todos.json';
 	export let todos: Todo[] = [];
 	let todo: string;
-	const fileName = 'todos.json';
 
 	globalThis.api.fileSystem.send('readFile', fileName);
 	globalThis.api.fileSystem.receive('getFile', (data) => {
@@ -53,7 +32,7 @@
 		}
 	}
 
-	function toggleDone(uid) {
+	function toggleDone(uid: string) {
 		todos = todos.map((t) => {
 			if (t.uid === uid) {
 				return { ...t, done: !t.done };
@@ -64,12 +43,12 @@
 		saveTodos();
 	}
 
-	function deleteTodo(uid) {
+	function deleteTodo(uid: string) {
 		todos = todos.filter((t) => t.uid !== uid);
 		saveTodos();
 	}
 
-	function updateTodo(uid, text) {
+	function updateTodo(uid: string, text: string) {
 		todos = todos.map((t) => {
 			if (t.uid === uid) {
 				return { ...t, text };
@@ -99,14 +78,8 @@
 	<form class="new" on:submit|preventDefault={saveNewTodo}>
 		<input name="text" aria-label="Add todo" placeholder="+ tap to add a todo" bind:value={todo} />
 	</form>
-
 	{#each todos as todo (todo.uid)}
-		<div
-			class="todo"
-			class:done={todo.done}
-			transition:scale|local={{ start: 0.7 }}
-			animate:flip={{ duration: 200 }}
-		>
+		<div class="todo" class:done={todo.done} transition:slide animate:flip={{ duration: 400 }}>
 			<form on:submit|preventDefault on:click={() => toggleDone(todo.uid)}>
 				<input type="hidden" name="done" value={todo.done ? '' : 'true'} />
 				<button class="toggle" aria-label="Mark todo as {todo.done ? 'not done' : 'done'}" />

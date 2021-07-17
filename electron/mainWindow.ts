@@ -34,7 +34,7 @@ class Main {
 
   app.on('ready', () => {
 
-    let loading = new BrowserWindow({show: false, frame: false})
+    let loading = new BrowserWindow({show: false, frame: false, width: 300, height:300, transparent:true})
 
     loading.once('show', async () => {
       this.window = await this.createWindow();
