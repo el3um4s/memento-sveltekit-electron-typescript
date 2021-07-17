@@ -9,12 +9,13 @@ To create a new project based on this template using [degit](https://github.com/
 
 ```bash
 npx degit el3um4s/memento-sveltekit-electron-typescript
-cd svelte-app
 ```
 
 Then install the dependencies with
 
 ```bash
+npm install
+cd svelte
 npm install
 ```
 
