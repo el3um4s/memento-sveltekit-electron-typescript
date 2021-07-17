@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Version from '../../../components/Version.svelte';
-	import InfoElectron from '../../../components/InfoElectron.svelte';
+	import Version from '$lib/components/Version.svelte';
+	import InfoElectron from '$lib/components/InfoElectron.svelte';
 </script>
 
 <div>

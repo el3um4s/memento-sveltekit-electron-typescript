@@ -1,27 +1,23 @@
-<script context="module" lang="ts">
+<!-- <script context="module" lang="ts">
 	import { enhance } from '$lib/form';
-	import type { Load } from '@sveltejs/kit';
+	// import type { Load } from '@sveltejs/kit';
 
 	// see https://kit.svelte.dev/docs#loading
-	export const load: Load = async ({ fetch }) => {
-		const res = await fetch('/todos.json');
-
-		if (res.ok) {
-			const todos = await res.json();
-
-			return {
-				props: { todos }
-			};
-		}
-
-		const { message } = await res.json();
-
-		return {
-			error: new Error(message)
-		};
-	};
-</script>
-
+	// export const load: Load = async () => {
+	// globalThis.api.fileSystem.send('readFile', 'todos.json');
+	// let todos = [];
+	// await globalThis.api.fileSystem.receive('getFile', (data) => {
+	// 	console.log('globalThis.api.fileSystem.receive');
+	// 	console.log(data);
+	// 	todos = data;
+	// });
+	// console.log('TODO DATA LOAD');
+	// console.log(todos);
+	// return {
+	// 	props: { todos }
+	// };
+	// };
+</script> -->
 <script lang="ts">
 	import { slide } from 'svelte/transition';
 	import { scale } from 'svelte/transition';
@@ -34,15 +30,62 @@
 		done: boolean;
 	};
 
-	export let todos: Todo[];
+	export let todos: Todo[] = [];
+	let todo: string;
+	const fileName = 'todos.json';
 
-	async function patch(res: Response) {
-		const todo = await res.json();
+	globalThis.api.fileSystem.send('readFile', fileName);
+	globalThis.api.fileSystem.receive('getFile', (data) => {
+		todos = [...data];
+	});
 
+	function saveNewTodo() {
+		if (todo && todo.trim().length > 0) {
+			let newTodo: Todo = {
+				uid: Math.random().toString(),
+				created_at: new Date(),
+				text: todo,
+				done: false
+			};
+			todos = [newTodo, ...todos];
+			todo = '';
+			saveTodos();
+		}
+	}
+
+	function toggleDone(uid) {
 		todos = todos.map((t) => {
-			if (t.uid === todo.uid) return todo;
+			if (t.uid === uid) {
+				return { ...t, done: !t.done };
+			}
 			return t;
 		});
+
+		saveTodos();
+	}
+
+	function deleteTodo(uid) {
+		todos = todos.filter((t) => t.uid !== uid);
+		saveTodos();
+	}
+
+	function updateTodo(uid, text) {
+		todos = todos.map((t) => {
+			if (t.uid === uid) {
+				return { ...t, text };
+			}
+			return t;
+		});
+
+		saveTodos();
+	}
+
+	function saveTodos() {
+		const data = {
+			fileName: fileName,
+			todo: JSON.stringify(todos)
+		};
+		globalThis.api.fileSystem.send('saveFile', data);
 	}
 </script>
 
@@ -53,20 +96,8 @@
 <div class="todos" transition:slide>
 	<h1>Todos</h1>
 
-	<form
-		class="new"
-		action="/todos.json"
-		method="post"
-		use:enhance={{
-			result: async (res, form) => {
-				const created = await res.json();
-				todos = [...todos, created];
-
-				form.reset();
-			}
-		}}
-	>
-		<input name="text" aria-label="Add todo" placeholder="+ tap to add a todo" />
+	<form class="new" on:submit|preventDefault={saveNewTodo}>
+		<input name="text" aria-label="Add todo" placeholder="+ tap to add a todo" bind:value={todo} />
 	</form>
 
 	{#each todos as todo (todo.uid)}
@@ -76,41 +107,22 @@
 			transition:scale|local={{ start: 0.7 }}
 			animate:flip={{ duration: 200 }}
 		>
-			<form
-				action="/todos/{todo.uid}.json?_method=patch"
-				method="post"
-				use:enhance={{
-					pending: (data) => {
-						todo.done = !!data.get('done');
-					},
-					result: patch
-				}}
-			>
+			<form on:submit|preventDefault on:click={() => toggleDone(todo.uid)}>
 				<input type="hidden" name="done" value={todo.done ? '' : 'true'} />
 				<button class="toggle" aria-label="Mark todo as {todo.done ? 'not done' : 'done'}" />
 			</form>
 
-			<form
-				class="text"
-				action="/todos/{todo.uid}.json?_method=patch"
-				method="post"
-				use:enhance={{
-					result: patch
-				}}
-			>
-				<input aria-label="Edit todo" type="text" name="text" value={todo.text} />
-				<button class="save" aria-label="Save todo" />
+			<form on:submit|preventDefault class="text">
+				<input
+					aria-label="Edit todo"
+					type="text"
+					name="text"
+					value={todo.text}
+					on:change={(e) => updateTodo(todo.uid, e.target.value)}
+				/>
 			</form>
 
-			<form
-				action="/todos/{todo.uid}.json?_method=delete"
-				method="post"
-				use:enhance={{
-					result: () => {
-						todos = todos.filter((t) => t.uid !== todo.uid);
-					}
-				}}
-			>
+			<form on:submit|preventDefault on:click={() => deleteTodo(todo.uid)}>
 				<button class="delete" aria-label="Delete todo" />
 			</form>
 		</div>
@@ -213,15 +225,7 @@
 		opacity: 1;
 	}
 
-	.save {
-		position: absolute;
-		right: 0;
-		opacity: 0;
-		background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20.5 2H3.5C2.67158 2 2 2.67157 2 3.5V20.5C2 21.3284 2.67158 22 3.5 22H20.5C21.3284 22 22 21.3284 22 20.5V3.5C22 2.67157 21.3284 2 20.5 2Z' fill='%23676778' stroke='%23676778' stroke-width='1.5' stroke-linejoin='round'/%3E%3Cpath d='M17 2V11H7.5V2H17Z' fill='white' stroke='white' stroke-width='1.5' stroke-linejoin='round'/%3E%3Cpath d='M13.5 5.5V7.5' stroke='%23676778' stroke-width='1.5' stroke-linecap='round'/%3E%3Cpath d='M5.99844 2H18.4992' stroke='%23676778' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E%0A");
-	}
-
-	.todo input:focus + .save,
-	.save:focus {
+	.todo input:focus {
 		transition: opacity 0.2s;
 		opacity: 1;
 	}

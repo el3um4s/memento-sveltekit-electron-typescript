@@ -43,6 +43,7 @@ class ConfigureDev {
     _build_Dist() { exec("npm run svelte:build"); }
     _watch_Dist() { require("electron-reload")(path.join(__dirname, "www")); }
     _serve_Dist() { 
+        // this.loadURL = serve({ directory: pathOnDisk, scheme: "html" });
         this.loadURL = serve({ directory: "dist/www" });
     }
 

@@ -4,6 +4,7 @@ import Main from "./mainWindow";
 
 import systemInfo from './IPC/systemInfo';
 import updaterInfo from './IPC/updaterInfo';
+import fileSystem from './IPC/fileSystem';
 
 const developerOptions = {
   isInProduction: true,    // true if is in production
@@ -11,6 +12,12 @@ const developerOptions = {
   buildSvelteDev: false,     // true when you want to build svelte
   watchSvelteBuild: false,   // true when you want to watch build svelte 
 };
+
+/*
+  testing svelte side: isInProduction: false, serveSvelteDev: true, buildSvelteDev:false, watchSvelteBuild: false
+  testing only electron side: isInProduction: true, serveSvelteDev: false, buildSvelteDev:false, watchSvelteBuild: false
+  testing both side: isInProduction: true, serveSvelteDev: false, buildSvelteDev:true, watchSvelteBuild: true
+*/
 
 const windowSettings = {
   title:  "MEMENTO - SvelteKit, Electron, TypeScript",
@@ -23,8 +30,8 @@ let main = new Main(windowSettings, developerOptions);
 main.onEvent.on("window-created", async () => {
   systemInfo.initIpcMain(ipcMain, main.window);
   updaterInfo.initIpcMain(ipcMain, main.window);
-
+  fileSystem.initIpcMain(ipcMain, main.window);
+  
   updaterInfo.initAutoUpdater(autoUpdater, main.window);
-
 });
 

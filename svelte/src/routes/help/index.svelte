@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
-	import Tab from '../../components/tab.svelte';
+	import Tab from '$lib/components/tab.svelte';
 
 	import Start from './tab/start.svelte';
 	import Command from './tab/command.svelte';

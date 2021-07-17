@@ -66,9 +66,19 @@ class Main {
     });
 
     if (this.configDev.isLocalHost()) {
-      await window.loadURL("http://localhost:3000/");
+      try {
+        await window.loadURL("http://localhost:3000/");
+      } catch (error) {
+        console.log(`ERROR: window.loadURL("http://localhost:3000/");`)
+        console.log(error)
+      }
     } else if (this.configDev.isElectronServe()) {
-      await this.configDev.loadURL(window);
+      try {
+        await this.configDev.loadURL(window);
+      } catch (error) {
+        console.log(`this.configDev.loadURL(window);`)
+        console.log(error)
+      }
     }
 
     window.show();
