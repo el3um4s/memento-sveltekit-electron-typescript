@@ -13,5 +13,11 @@
 				>Electron and TypeScript: how to use ipcMain and ipcRenderer</a
 			>
 		</li>
+
+		<li>
+			<a href="https://www.patreon.com/posts/sveltekit-53840008" target="_blank"
+				>SvelteKit & Electron</a
+			>
+		</li>
 	</ul>
 </div>
