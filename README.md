@@ -46,3 +46,4 @@ I'm blogging about the development process in these posts:
 
 - [Svelte, Electron & TypeScript](https://www.patreon.com/posts/svelte-electron-52952074)
 - [Electron and TypeScript: how to use ipcMain and ipcRenderer](https://www.patreon.com/posts/electron-and-how-53505039)
+- [SvelteKit & Electron](https://www.patreon.com/posts/sveltekit-53840008)
