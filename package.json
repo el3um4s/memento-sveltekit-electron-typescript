@@ -19,8 +19,6 @@
     "check-updates:patch": "npx npm-check-updates --target patch"
   },
   "devDependencies": {
-    "@el3um4s/ipc-for-electron": "^1.0.7",
-    "@el3um4s/ipc-for-electron-system-info": "^2.0.4",
     "@types/node": "^18.7.18",
     "concurrently": "^7.4.0",
     "electron": "^20.1.4",
@@ -29,6 +27,8 @@
     "typescript": "^4.8.3"
   },
   "dependencies": {
+    "@el3um4s/ipc-for-electron": "^1.0.7",
+    "@el3um4s/ipc-for-electron-system-info": "^2.0.4",
     "electron-reload": "^1.5.0",
     "electron-serve": "^1.1.0",
     "electron-updater": "^5.2.1"
