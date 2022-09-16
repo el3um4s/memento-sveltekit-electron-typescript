@@ -4,7 +4,8 @@ import { autoUpdater } from "electron-updater";
 import Main from "./mainWindow";
 import globals from "./globals";
 
-import systemInfo from "./IPC/systemInfo";
+import systemInfo from "@el3um4s/ipc-for-electron-system-info";
+
 import updaterInfo from "./IPC/updaterInfo";
 import fileSystem from "./IPC/fileSystem";
 

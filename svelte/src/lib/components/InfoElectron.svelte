@@ -1,27 +1,28 @@
 <script lang="ts">
-	let chrome = '-';
-	let node = '-';
-	let electron = '-';
+	import systemInfo from '@el3um4s/renderer-for-electron-system-info';
 
-	const systemInfo = globalThis['ipc' as keyof typeof globalThis]['systemInfo'];
+	let chrome: string = '-';
+	let node: string = '-';
+	let electron: string = '-';
+	let app: string = '-';
 
-	systemInfo.send('requestSystemInfo', null);
-	systemInfo.receive(
-		'getSystemInfo',
-		(data: { chrome: string; node: string; electron: string }) => {
+	systemInfo.requestSystemInfo({
+		callback: (data) => {
 			chrome = data.chrome;
 			node = data.node;
 			electron = data.electron;
+			app = data.app;
 		}
-	);
+	});
 </script>
 
 <div>
 	<p>We are using</p>
 	<ul>
 		<li>Node.js <span class="version">{node}</span></li>
-		<li>Chromium <span class="version">{chrome}</span></li>
 		<li>Electron <span class="version">{electron}</span></li>
+		<li>Chromium <span class="version">{chrome}</span></li>
+		<li>App <span class="version">{app}</span></li>
 	</ul>
 </div>
 
