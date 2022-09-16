@@ -3,12 +3,17 @@
 	let node = '-';
 	let electron = '-';
 
-	globalThis.api.systemInfo.send('requestSystemInfo', null);
-	globalThis.api.systemInfo.receive('getSystemInfo', (data) => {
-		chrome = data.chrome;
-		node = data.node;
-		electron = data.electron;
-	});
+	const systemInfo = globalThis['api' as keyof typeof globalThis]['systemInfo'];
+
+	systemInfo.send('requestSystemInfo', null);
+	systemInfo.receive(
+		'getSystemInfo',
+		(data: { chrome: string; node: string; electron: string }) => {
+			chrome = data.chrome;
+			node = data.node;
+			electron = data.electron;
+		}
+	);
 </script>
 
 <div>

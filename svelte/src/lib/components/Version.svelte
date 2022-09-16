@@ -9,55 +9,60 @@
 
 	let downloadMessage: string = '';
 
-	globalThis.api.updaterInfo.send('requestVersionNumber', null);
+	const updaterInfo = globalThis['api' as keyof typeof globalThis]['updaterInfo'];
 
-	globalThis.api.updaterInfo.receive('getVersionNumber', (data) => {
+	updaterInfo.send('requestVersionNumber', null);
+
+	updaterInfo.receive('getVersionNumber', (data: { version: string }) => {
 		version = data.version;
 	});
 
 	function check() {
 		checkingForUpdate = true;
-		globalThis.api.updaterInfo.send('checkForUpdate', { version });
+		updaterInfo.send('checkForUpdate', { version });
 	}
 
-	globalThis.api.updaterInfo.receive('checkingForUpdate', (data) => {
+	updaterInfo.receive('checkingForUpdate', () => {
 		checkingForUpdate = true;
 	});
 
-	globalThis.api.updaterInfo.receive('updateAvailable', (data) => {
+	updaterInfo.receive('updateAvailable', () => {
 		checkingForUpdate = false;
 		updateAvailable = true;
 	});
 
-	globalThis.api.updaterInfo.receive('updateNotAvailable', (data) => {
+	updaterInfo.receive('updateNotAvailable', () => {
 		checkingForUpdate = false;
 		updateAvailable = false;
 		updateNotAvailable = true;
 	});
 
 	function startDownloadUpdate() {
-		globalThis.api.updaterInfo.send('startDownloadUpdate', null);
+		updaterInfo.send('startDownloadUpdate', null);
 		updateAvailable = false;
 		downloading = true;
 	}
 
-	globalThis.api.updaterInfo.receive('downloadProgress', (data) => {
-		downloading = true;
-		updateAvailable = false;
-		let log_message = 'Download speed: ' + data.bytesPerSecond;
-		log_message = log_message + ' - Downloaded ' + data.percent + '%';
-		log_message = log_message + ' (' + data.transferred + '/' + data.total + ')';
-		downloadMessage = log_message;
-	});
+	updaterInfo.receive(
+		'downloadProgress',
+		(data: { bytesPerSecond: string; percent: string; transferred: string; total: string }) => {
+			downloading = true;
+			updateAvailable = false;
+			let log_message = 'Download speed: ' + data.bytesPerSecond;
+			log_message = log_message + ' - Downloaded ' + data.percent + '%';
+			log_message = log_message + ' (' + data.transferred + '/' + data.total + ')';
+			downloadMessage = log_message;
+		}
+	);
 
-	globalThis.api.updaterInfo.receive('updateDownloaded', (data) => {
+	updaterInfo.receive('updateDownloaded', () => {
 		downloading = false;
 		updateAvailable = false;
 		quitAndInstall = true;
 	});
 
 	function install() {
-		globalThis.api.updaterInfo.send('quitAndInstall', null);
+		updaterInfo.send('quitAndInstall', null);
 		quitAndInstall = false;
 	}
 </script>

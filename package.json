@@ -4,7 +4,7 @@
   "description": "Memento: how to use Svelte with Electron and TypeScript",
   "author": "Samuele de Tomasi <samuele@stranianelli.com>",
   "license": "MIT",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "dist/index.js",
   "scripts": {
     "nodemon": "nodemon",
@@ -13,7 +13,10 @@
     "svelte:build": "cd svelte && npm run build",
     "compile": "tsc",
     "out:win": "npm run svelte:build && npm run compile && electron-builder build --win --publish never",
-    "publish:win": "npm run svelte:build && npm run compile && electron-builder build --win --publish always"
+    "publish:win": "npm run svelte:build && npm run compile && electron-builder build --win --publish always",
+    "check-updates": "npx npm-check-updates",
+    "check-updates:minor": "npx npm-check-updates --target minor",
+    "check-updates:patch": "npx npm-check-updates --target patch"
   },
   "devDependencies": {
     "@types/node": "^18.7.18",
