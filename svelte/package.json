@@ -11,6 +11,7 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
+		"@el3um4s/renderer-for-electron-system-info": "^2.0.1",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/adapter-static": "^1.0.0-next.43",
 		"@sveltejs/kit": "next",
