@@ -38,25 +38,25 @@ class Main {
     this.configDev = new ConfigureDev(this.settingsDev);
 
     app.on("ready", async () => {
-      // let loading = new BrowserWindow({
-      //   show: false,
-      //   frame: false,
-      //   width: 300,
-      //   height: 300,
-      //   transparent: true,
-      // });
+      let loading = new BrowserWindow({
+        show: false,
+        frame: false,
+        width: 300,
+        height: 300,
+        transparent: true,
+      });
 
-      this.window = await this.createWindow();
-      this.onEvent.emit("window-created");
+      // this.window = await this.createWindow();
+      // this.onEvent.emit("window-created");
 
-      // loading.once("show", async () => {
-      //   this.window = await this.createWindow();
-      //   this.onEvent.emit("window-created");
-      //   loading.hide();
-      //   loading.close();
-      // });
-      // loading.loadURL(path.join(__dirname, "www", "loading.html"));
-      // loading.show();
+      loading.once("show", async () => {
+        this.window = await this.createWindow();
+        this.onEvent.emit("window-created");
+        loading.hide();
+        loading.close();
+      });
+      loading.loadURL(path.join(__dirname, "www", "loading.html"));
+      loading.show();
     });
 
     app.on("window-all-closed", this.onWindowAllClosed);
@@ -81,7 +81,7 @@ class Main {
       try {
         await window.loadURL("http://localhost:5173/");
       } catch (error) {
-        console.log(`ERROR: window.loadURL("http://localhost:3000/");`);
+        console.log(`ERROR: window.loadURL("http://localhost:5173/");`);
         console.log(error);
       }
     } else if (this.configDev.isElectronServe()) {
