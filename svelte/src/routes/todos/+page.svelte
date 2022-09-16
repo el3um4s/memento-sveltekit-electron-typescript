@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { slide, fade } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 
 	type Todo = {
@@ -9,13 +9,21 @@
 		done: boolean;
 	};
 
+	let fileSystem: any;
+	try {
+		fileSystem = globalThis['api' as keyof typeof globalThis]['fileSystem'];
+	} catch (error) {
+		console.error(error);
+		fileSystem = null;
+	}
+
 	const fileName = 'todos.json';
 	export let todos: Todo[] = [];
 	let todo: string;
 
 	try {
-		globalThis.api.fileSystem.send('readFile', fileName);
-		globalThis.api.fileSystem.receive('getFile', (data) => {
+		fileSystem.send('readFile', fileName);
+		fileSystem.receive('getFile', (data: Todo[]) => {
 			todos = [...data];
 		});
 	} catch (e) {
@@ -63,13 +71,18 @@
 		saveTodos();
 	}
 
+	function updateTodoFromElement(uid: string, e: Event) {
+		const target = e.target as HTMLInputElement;
+		updateTodo(uid, target.value);
+	}
+
 	function saveTodos() {
 		const data = {
 			fileName: fileName,
 			todo: JSON.stringify(todos)
 		};
 		try {
-			globalThis.api.fileSystem.send('saveFile', data);
+			fileSystem.send('saveFile', data);
 		} catch (e) {
 			console.error(e);
 		}
@@ -99,7 +112,7 @@
 					type="text"
 					name="text"
 					value={todo.text}
-					on:change={(e) => updateTodo(todo.uid, e.target.value)}
+					on:change={(e) => updateTodoFromElement(todo.uid, e)}
 				/>
 			</form>
 

@@ -4,14 +4,6 @@ import EventEmitter from "events";
 import ConfigureDev from "./configureDev";
 import { DeveloperOptions } from "./configureDev";
 
-import { ipcMain } from "electron";
-import { autoUpdater } from "electron-updater";
-import systemInfo from "./IPC/systemInfo";
-import updaterInfo from "./IPC/updaterInfo";
-import fileSystem from "./IPC/fileSystem";
-
-import globals from "./globals";
-
 const appName = "MEMENTO - SvelteKit, Electron, TypeScript";
 
 const defaultSettings = {
@@ -74,14 +66,12 @@ class Main {
   async createWindow() {
     let settings = { ...this.settings };
     app.name = appName;
-    const preload = globals.get.preloadjs();
     let window = new BrowserWindow({
       ...settings,
-      show: false, // false
+      show: false,
       webPreferences: {
         nodeIntegration: false,
         contextIsolation: true,
-        // enableRemoteModule: true,
         sandbox: false,
         preload: path.join(__dirname, "preload.js"),
       },
