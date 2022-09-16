@@ -9,7 +9,7 @@
 
 	let downloadMessage: string = '';
 
-	const updaterInfo = globalThis['api' as keyof typeof globalThis]['updaterInfo'];
+	const updaterInfo = globalThis['ipc' as keyof typeof globalThis]['updaterInfo'];
 
 	updaterInfo.send('requestVersionNumber', null);
 

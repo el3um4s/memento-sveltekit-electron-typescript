@@ -3,7 +3,7 @@
 	let node = '-';
 	let electron = '-';
 
-	const systemInfo = globalThis['api' as keyof typeof globalThis]['systemInfo'];
+	const systemInfo = globalThis['ipc' as keyof typeof globalThis]['systemInfo'];
 
 	systemInfo.send('requestSystemInfo', null);
 	systemInfo.receive(

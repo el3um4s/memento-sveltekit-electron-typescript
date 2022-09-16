@@ -4,6 +4,6 @@ import systemInfo from "./IPC/systemInfo";
 import updaterInfo from "./IPC/updaterInfo";
 import fileSystem from "./IPC/fileSystem";
 
-generateContextBridge([systemInfo, updaterInfo, fileSystem], "api");
+generateContextBridge([systemInfo, updaterInfo, fileSystem], "ipc");
 
 console.log("ciao mondo");

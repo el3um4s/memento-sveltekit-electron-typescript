@@ -11,7 +11,7 @@
 
 	let fileSystem: any;
 	try {
-		fileSystem = globalThis['api' as keyof typeof globalThis]['fileSystem'];
+		fileSystem = globalThis['ipc' as keyof typeof globalThis]['fileSystem'];
 	} catch (error) {
 		console.error(error);
 		fileSystem = null;
