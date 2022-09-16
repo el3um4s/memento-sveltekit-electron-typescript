@@ -89,7 +89,7 @@ class Main {
 
     if (this.configDev.isLocalHost()) {
       try {
-        await window.loadURL("http://localhost:3000/");
+        await window.loadURL("http://localhost:5173/");
       } catch (error) {
         console.log(`ERROR: window.loadURL("http://localhost:3000/");`);
         console.log(error);

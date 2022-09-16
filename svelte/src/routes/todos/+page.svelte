@@ -13,10 +13,14 @@
 	export let todos: Todo[] = [];
 	let todo: string;
 
-	globalThis.api.fileSystem.send('readFile', fileName);
-	globalThis.api.fileSystem.receive('getFile', (data) => {
-		todos = [...data];
-	});
+	try {
+		globalThis.api.fileSystem.send('readFile', fileName);
+		globalThis.api.fileSystem.receive('getFile', (data) => {
+			todos = [...data];
+		});
+	} catch (e) {
+		console.error(e);
+	}
 
 	function saveNewTodo() {
 		if (todo && todo.trim().length > 0) {
@@ -64,7 +68,11 @@
 			fileName: fileName,
 			todo: JSON.stringify(todos)
 		};
-		globalThis.api.fileSystem.send('saveFile', data);
+		try {
+			globalThis.api.fileSystem.send('saveFile', data);
+		} catch (e) {
+			console.error(e);
+		}
 	}
 </script>
 
