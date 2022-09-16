@@ -82,8 +82,8 @@ class Main {
         nodeIntegration: false,
         contextIsolation: true,
         // enableRemoteModule: true,
-        sandbox: true,
-        preload, //: path.join(__dirname, "preload.js"),
+        sandbox: false,
+        preload: path.join(__dirname, "preload.js"),
       },
     });
 
