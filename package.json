@@ -16,6 +16,7 @@
     "publish:win": "npm run svelte:build && npm run compile && electron-builder build --win --publish always"
   },
   "devDependencies": {
+    "@types/node": "^18.7.18",
     "concurrently": "^6.2.0",
     "electron": "^15.5.5",
     "electron-builder": "^22.11.7",
